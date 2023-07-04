@@ -215,9 +215,9 @@ end
 function M.Xplr(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.xplr_cmd .. " | save --raw --append /tmp/fm-nvim " .. dir, "<CR>")
+        createWin(config.cmds.xplr_cmd .. " | save --raw -f /tmp/fm-nvim " .. dir, "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.xplr_cmd .. " | save --raw --append /tmp/fm-nvim " .. dir, "<CR>")
+        createSplit(config.cmds.xplr_cmd .. " | save --raw -f /tmp/fm-nvim " .. dir, "<CR>")
     end
 end
 function M.Vifm(dir)
