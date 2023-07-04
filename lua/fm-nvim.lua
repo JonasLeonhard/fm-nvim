@@ -215,8 +215,7 @@ end
 function M.Xplr(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        print(config.cmds.xplr_cmd .. " | save --raw -f /tmp/fm-nvim " .. dir)
-        createWin(config.cmds.xplr_cmd .. " | save --raw -f /tmp/fm-nvim " .. dir, "<CR>")
+        createWin(config.cmds.xplr_cmd .. " " .. dir .. "| save --raw -f /tmp/fm-nvim " , "<CR>")
     elseif config.ui.default == "split" then
         createSplit(config.cmds.xplr_cmd .. " | save --raw -f /tmp/fm-nvim " .. dir, "<CR>")
     end
