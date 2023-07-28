@@ -8,7 +8,9 @@
 
 # fm-nvim
 
-`fm-nvim` is a Neovim plugin FORK for nushell of fm-nvim that lets you use your favorite terminal file managers (and fuzzy finders) from within Neovim. 
+`fm-nvim` is a Neovim plugin FORK for nushell of fm-nvim that lets you use your favorite terminal file managers (and fuzzy finders) from within Neovim in both Nushell and Zsh/bash.
+The original plugin used the '>' operator to save your selection to tmp files. that operator does not exists in nushell.
+This fork adds shell detection on startup and changes the operator to match your shell environment.
 
 <details>
 <summary>Supported File Managers</summary>
