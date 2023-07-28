@@ -9,6 +9,8 @@ if shell == 'nu' then
     pipeIntoCommand = '| save --raw -f'
 end
 
+print("loadded fm-nvim" .. pipeIntoCommand .. " -- " .. shell)
+
 
 local config = {
     ui = {
