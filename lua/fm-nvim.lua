@@ -1,5 +1,15 @@
 local M = {}
 
+local pipeIntoCommand = '>';
+
+local shellPath = vim.api.nvim_get_option('shell');
+local splitPath = vim.split(shellPath, '/')
+local shell = splitPath[#splitPath]
+if shell == 'nu' then
+    pipeIntoCommand = '| save --raw -f'
+end
+
+
 local config = {
     ui = {
         default = "float",
@@ -90,30 +100,30 @@ local function postCreation(suffix)
         "t",
         config.mappings.edit,
         '<C-\\><C-n>:lua require("fm-nvim").setMethod("edit")<CR>i' .. suffix,
-        {silent = true}
+        { silent = true }
     )
     vim.api.nvim_buf_set_keymap(
         M.buf,
         "t",
         config.mappings.tabedit,
         '<C-\\><C-n>:lua require("fm-nvim").setMethod("tabedit")<CR>i' .. suffix,
-        {silent = true}
+        { silent = true }
     )
     vim.api.nvim_buf_set_keymap(
         M.buf,
         "t",
         config.mappings.horz_split,
         '<C-\\><C-n>:lua require("fm-nvim").setMethod("split | edit")<CR>i' .. suffix,
-        {silent = true}
+        { silent = true }
     )
     vim.api.nvim_buf_set_keymap(
         M.buf,
         "t",
         config.mappings.vert_split,
         '<C-\\><C-n>:lua require("fm-nvim").setMethod("vsplit | edit")<CR>i' .. suffix,
-        {silent = true}
+        { silent = true }
     )
-    vim.api.nvim_buf_set_keymap(M.buf, "t", "<ESC>", config.mappings.ESC, {silent = true})
+    vim.api.nvim_buf_set_keymap(M.buf, "t", "<ESC>", config.mappings.ESC, { silent = true })
 end
 
 local function createWin(cmd, suffix)
@@ -133,7 +143,7 @@ local function createWin(cmd, suffix)
     }
     M.win = vim.api.nvim_open_win(M.buf, true, opts)
     postCreation(suffix)
-    vim.fn.termopen(cmd, {on_exit = on_exit})
+    vim.fn.termopen(cmd, { on_exit = on_exit })
     vim.api.nvim_command("startinsert")
     vim.api.nvim_win_set_option(
         M.win,
@@ -143,7 +153,7 @@ local function createWin(cmd, suffix)
     vim.api.nvim_win_set_option(M.win, "winblend", config.ui.float.blend)
     M.closeCmd = function()
         vim.api.nvim_win_close(M.win, true)
-        vim.api.nvim_buf_delete(M.buf, {force = true})
+        vim.api.nvim_buf_delete(M.buf, { force = true })
     end
 end
 
@@ -151,7 +161,7 @@ local function createSplit(cmd, suffix)
     vim.cmd(config.ui.split.direction .. " " .. config.ui.split.size .. "vnew")
     M.buf = vim.api.nvim_get_current_buf()
     postCreation(suffix)
-    vim.fn.termopen(cmd, {on_exit = on_exit})
+    vim.fn.termopen(cmd, { on_exit = on_exit })
     vim.api.nvim_command("startinsert")
     M.closeCmd = function()
         vim.cmd("bdelete!")
@@ -166,6 +176,7 @@ function M.Lf(dir)
         createSplit(config.cmds.lf_cmd .. " -selection-path /tmp/fm-nvim " .. dir, "l")
     end
 end
+
 function M.Fm(dir)
     dir = dir or "."
     if config.ui.default == "float" then
@@ -174,6 +185,7 @@ function M.Fm(dir)
         createSplit(config.cmds.fm_cmd .. " --selection-path /tmp/fm-nvim --start-dir " .. dir, "E")
     end
 end
+
 function M.Nnn(dir)
     dir = dir or "."
     if config.ui.default == "float" then
@@ -182,6 +194,7 @@ function M.Nnn(dir)
         createSplit(config.cmds.nnn_cmd .. " -p /tmp/fm-nvim " .. dir, "<CR>")
     end
 end
+
 function M.Fff(dir)
     dir = dir or "."
     if config.ui.default == "float" then
@@ -190,59 +203,72 @@ function M.Fff(dir)
         createSplit(config.cmds.fff_cmd .. " -p " .. dir, "l")
     end
 end
+
 function M.Twf(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.twf_cmd .. " > /tmp/fm-nvim -dir " .. dir, "<CR>")
+        createWin(config.cmds.twf_cmd .. " " .. pipeIntoCommand .. " /tmp/fm-nvim -dir " .. dir, "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.twf_cmd .. " > /tmp/fm-nvim -dir " .. dir, "<CR>")
+        createSplit(config.cmds.twf_cmd .. " " .. pipeIntoCommand .. " /tmp/fm-nvim -dir " .. dir, "<CR>")
     end
 end
+
 function M.Fzf()
     if config.ui.default == "float" then
-        createWin(config.cmds.fzf_cmd .. " > /tmp/fm-nvim", "<CR>")
+        createWin(config.cmds.fzf_cmd .. " " .. pipeIntoCommand .. " /tmp/fm-nvim", "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.fzf_cmd .. " > /tmp/fm-nvim", "<CR>")
+        createSplit(config.cmds.fzf_cmd .. " " .. pipeIntoCommand .. " /tmp/fm-nvim", "<CR>")
     end
 end
+
 function M.Fzy()
     if config.ui.default == "float" then
-        createWin(config.cmds.fzy_cmd .. " > /tmp/fm-nvim", "<CR>")
+        createWin(config.cmds.fzy_cmd .. " " .. pipeIntoCommand .. " /tmp/fm-nvim", "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.fzy_cmd .. " > /tmp/fm-nvim", "<CR>")
+        createSplit(config.cmds.fzy_cmd .. " " .. pipeIntoCommand .. " /tmp/fm-nvim", "<CR>")
     end
 end
+
 function M.Xplr(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.xplr_cmd .. " " .. dir .. "| save --raw -f /tmp/fm-nvim " , "<CR>")
+        createWin(config.cmds.xplr_cmd .. " " .. pipeIntoCommand " /tmp/fm-nvim " .. dir, "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.xplr_cmd .. " | save --raw -f /tmp/fm-nvim " .. dir, "<CR>")
+        createSplit(config.cmds.xplr_cmd .. " " .. pipeIntoCommand .. " /tmp/fm-nvim " .. dir, "<CR>")
     end
 end
+
 function M.Vifm(dir)
     dir = dir or "."
+
     if config.ui.default == "float" then
         createWin(config.cmds.vifm_cmd .. " --choose-files /tmp/fm-nvim " .. dir, "l")
     elseif config.ui.default == "split" then
         createSplit(config.cmds.vifm_cmd .. " --choose-files /tmp/fm-nvim " .. dir, "l")
     end
 end
+
 function M.Skim()
     if config.ui.default == "float" then
-        createWin(config.cmds.skim_cmd .. " > /tmp/fm-nvim", "<CR>")
+        createWin(config.cmds.skim_cmd .. " " .. pipeIntoCommand .. " /tmp/fm-nvim", "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.skim_cmd .. " > /tmp/fm-nvim", "<CR>")
+        createSplit(config.cmds.skim_cmd .. "" .. pipeIntoCommand .. " /tmp/fm-nvim", "<CR>")
     end
 end
+
 function M.Broot(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.broot_cmd .. " --conf " .. config.broot_conf .. " > /tmp/fm-nvim " .. dir, "<CR>")
+        createWin(
+            config.cmds.broot_cmd .. " --conf " .. config.broot_conf .. " " .. pipeIntoCommand .. " /tmp/fm-nvim " .. dir,
+            "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.broot_cmd .. " --conf " .. config.broot_conf .. " > /tmp/fm-nvim " .. dir, "<CR>")
+        createSplit(
+            config.cmds.broot_cmd .. " --conf " .. config.broot_conf .. " " .. pipeIntoCommand .. " /tmp/fm-nvim " .. dir,
+            "<CR>")
     end
 end
+
 function M.Gitui(dir)
     dir = dir or "."
     if config.ui.default == "float" then
@@ -251,6 +277,7 @@ function M.Gitui(dir)
         createSplit(config.cmds.gitui_cmd .. " -d " .. dir, "e")
     end
 end
+
 function M.Ranger(dir)
     dir = dir or "."
     if config.ui.default == "float" then
@@ -259,6 +286,7 @@ function M.Ranger(dir)
         createSplit(config.cmds.ranger_cmd .. " --choosefiles=/tmp/fm-nvim " .. dir, "l")
     end
 end
+
 function M.Joshuto(dir)
     dir = dir or "."
     if config.ui.default == "float" then
@@ -267,6 +295,7 @@ function M.Joshuto(dir)
         createSplit(config.cmds.joshuto_cmd .. " --choosefiles /tmp/fm-nvim --path " .. dir, "l")
     end
 end
+
 function M.Lazygit(dir)
     dir = dir or "."
     if config.ui.default == "float" then
@@ -275,6 +304,7 @@ function M.Lazygit(dir)
         createSplit(config.cmds.lazygit_cmd .. " -w " .. dir, "e")
     end
 end
+
 function M.Neomutt()
     if config.ui.default == "float" then
         createWin(config.cmds.neomutt_cmd, "<CR>")
@@ -282,6 +312,7 @@ function M.Neomutt()
         createSplit(config.cmds.neomutt_cmd, "<CR>")
     end
 end
+
 function M.TaskWarriorTUI()
     if config.ui.default == "float" then
         createWin(config.cmds.taskwarrior_cmd, "<CR>")
