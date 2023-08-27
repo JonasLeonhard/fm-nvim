@@ -20,6 +20,14 @@ local function saveToTmpFile()
     return "> /tmp/fm-nvim"
 end
 
+local function callOrReturn(x)
+    if type(x) == 'function' then
+        return x()
+    else
+        return x
+    end
+end
+
 local config = {
     ui = {
         default = "float",
@@ -270,11 +278,11 @@ function M.Broot(dir)
     dir = dir or "."
     if config.ui.default == "float" then
         createWin(
-            config.cmds.broot_cmd .. " --conf " .. config.broot_conf .. " " .. saveOpenDirToTmpFile(dir),
+            callOrReturn(config.cmds.broot_cmd) .. " --conf " .. config.broot_conf .. " " .. saveOpenDirToTmpFile(dir),
             "<CR>")
     elseif config.ui.default == "split" then
         createSplit(
-            config.cmds.broot_cmd .. " --conf " .. config.broot_conf .. " " .. saveOpenDirToTmpFile(dir),
+            callOrReturn(config.cmds.broot_cmd) .. " --conf " .. config.broot_conf .. " " .. saveOpenDirToTmpFile(dir),
             "<CR>")
     end
 end
