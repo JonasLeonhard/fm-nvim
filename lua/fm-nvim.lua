@@ -189,70 +189,70 @@ end
 function M.Lf(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.lf_cmd .. " -selection-path /tmp/fm-nvim " .. dir, "l")
+        createWin(callOrReturn(config.cmds.lf_cmd) .. " -selection-path /tmp/fm-nvim " .. dir, "l")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.lf_cmd .. " -selection-path /tmp/fm-nvim " .. dir, "l")
+        createSplit(callOrReturn(config.cmds.lf_cmd) .. " -selection-path /tmp/fm-nvim " .. dir, "l")
     end
 end
 
 function M.Fm(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.fm_cmd .. " --selection-path /tmp/fm-nvim --start-dir " .. dir, "E")
+        createWin(callOrReturn(config.cmds.fm_cmd) .. " --selection-path /tmp/fm-nvim --start-dir " .. dir, "E")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.fm_cmd .. " --selection-path /tmp/fm-nvim --start-dir " .. dir, "E")
+        createSplit(callOrReturn(config.cmds.fm_cmd) .. " --selection-path /tmp/fm-nvim --start-dir " .. dir, "E")
     end
 end
 
 function M.Nnn(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.nnn_cmd .. " -p /tmp/fm-nvim " .. dir, "<CR>")
+        createWin(callOrReturn(config.cmds.nnn_cmd) .. " -p /tmp/fm-nvim " .. dir, "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.nnn_cmd .. " -p /tmp/fm-nvim " .. dir, "<CR>")
+        createSplit(callOrReturn(config.cmds.nnn_cmd) .. " -p /tmp/fm-nvim " .. dir, "<CR>")
     end
 end
 
 function M.Fff(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.fff_cmd .. " -p " .. dir, "l")
+        createWin(callOrReturn(config.cmds.fff_cmd) .. " -p " .. dir, "l")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.fff_cmd .. " -p " .. dir, "l")
+        createSplit(callOrReturn(config.cmds.fff_cmd) .. " -p " .. dir, "l")
     end
 end
 
 function M.Twf(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.twf_cmd .. " " .. saveOpenDirToTmpFile(dir), "<CR>")
+        createWin(callOrReturn(config.cmds.twf_cmd) .. " " .. saveOpenDirToTmpFile(dir), "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.twf_cmd .. " " .. saveOpenDirToTmpFile(dir), "<CR>")
+        createSplit(callOrReturn(config.cmds.twf_cmd) .. " " .. saveOpenDirToTmpFile(dir), "<CR>")
     end
 end
 
 function M.Fzf()
     if config.ui.default == "float" then
-        createWin(config.cmds.fzf_cmd .. " " .. saveToTmpFile(), "<CR>")
+        createWin(callOrReturn(config.cmds.fzf_cmd) .. " " .. saveToTmpFile(), "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.fzf_cmd .. " " .. saveToTmpFile(), "<CR>")
+        createSplit(callOrReturn(config.cmds.fzf_cmd) .. " " .. saveToTmpFile(), "<CR>")
     end
 end
 
 function M.Fzy()
     if config.ui.default == "float" then
-        createWin(config.cmds.fzy_cmd .. " " .. saveToTmpFile(), "<CR>")
+        createWin(callOrReturn(config.cmds.fzy_cmd) .. " " .. saveToTmpFile(), "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.fzy_cmd .. " " .. saveToTmpFile(), "<CR>")
+        createSplit(callOrReturn(config.cmds.fzy_cmd) .. " " .. saveToTmpFile(), "<CR>")
     end
 end
 
 function M.Xplr(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.xplr_cmd .. " " .. saveOpenDirToTmpFile(dir), "<CR>")
+        createWin(callOrReturn(config.cmds.xplr_cmd) .. " " .. saveOpenDirToTmpFile(dir), "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.xplr_cmd .. " " .. saveOpenDirToTmpFile(dir), "<CR>")
+        createSplit(callOrReturn(config.cmds.xplr_cmd) .. " " .. saveOpenDirToTmpFile(dir), "<CR>")
     end
 end
 
@@ -260,17 +260,17 @@ function M.Vifm(dir)
     dir = dir or "."
 
     if config.ui.default == "float" then
-        createWin(config.cmds.vifm_cmd .. " --choose-files /tmp/fm-nvim " .. dir, "l")
+        createWin(callOrReturn(config.cmds.vifm_cmd) .. " --choose-files /tmp/fm-nvim " .. dir, "l")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.vifm_cmd .. " --choose-files /tmp/fm-nvim " .. dir, "l")
+        createSplit(callOrReturn(config.cmds.vifm_cmd) .. " --choose-files /tmp/fm-nvim " .. dir, "l")
     end
 end
 
 function M.Skim()
     if config.ui.default == "float" then
-        createWin(config.cmds.skim_cmd .. " " .. saveToTmpFile(), "<CR>")
+        createWin(callOrReturn(config.cmds.skim_cmd) .. " " .. saveToTmpFile(), "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.skim_cmd .. "" .. saveToTmpFile(), "<CR>")
+        createSplit(callOrReturn(config.cmds.skim_cmd) .. "" .. saveToTmpFile(), "<CR>")
     end
 end
 
@@ -290,52 +290,52 @@ end
 function M.Gitui(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.gitui_cmd .. " -d " .. dir, "e")
+        createWin(callOrReturn(config.cmds.gitui_cmd) .. " -d " .. dir, "e")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.gitui_cmd .. " -d " .. dir, "e")
+        createSplit(callOrReturn(config.cmds.gitui_cmd) .. " -d " .. dir, "e")
     end
 end
 
 function M.Ranger(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.ranger_cmd .. " --choosefiles=/tmp/fm-nvim " .. dir, "l")
+        createWin(callOrReturn(config.cmds.ranger_cmd) .. " --choosefiles=/tmp/fm-nvim " .. dir, "l")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.ranger_cmd .. " --choosefiles=/tmp/fm-nvim " .. dir, "l")
+        createSplit(callOrReturn(config.cmds.ranger_cmd) .. " --choosefiles=/tmp/fm-nvim " .. dir, "l")
     end
 end
 
 function M.Joshuto(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.joshuto_cmd .. " --choosefiles /tmp/fm-nvim --path " .. dir, "l")
+        createWin(callOrReturn(config.cmds.joshuto_cmd) .. " --choosefiles /tmp/fm-nvim --path " .. dir, "l")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.joshuto_cmd .. " --choosefiles /tmp/fm-nvim --path " .. dir, "l")
+        createSplit(callOrReturn(config.cmds.joshuto_cmd) .. " --choosefiles /tmp/fm-nvim --path " .. dir, "l")
     end
 end
 
 function M.Lazygit(dir)
     dir = dir or "."
     if config.ui.default == "float" then
-        createWin(config.cmds.lazygit_cmd .. " -w " .. dir, "e")
+        createWin(callOrReturn(config.cmds.lazygit_cmd) .. " -w " .. dir, "e")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.lazygit_cmd .. " -w " .. dir, "e")
+        createSplit(callOrReturn(config.cmds.lazygit_cmd) .. " -w " .. dir, "e")
     end
 end
 
 function M.Neomutt()
     if config.ui.default == "float" then
-        createWin(config.cmds.neomutt_cmd, "<CR>")
+        createWin(callOrReturn(config.cmds.neomutt_cmd), "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.neomutt_cmd, "<CR>")
+        createSplit(callOrReturn(config.cmds.neomutt_cmd), "<CR>")
     end
 end
 
 function M.TaskWarriorTUI()
     if config.ui.default == "float" then
-        createWin(config.cmds.taskwarrior_cmd, "<CR>")
+        createWin(callOrReturn(config.cmds.taskwarrior_cmd), "<CR>")
     elseif config.ui.default == "split" then
-        createSplit(config.cmds.taskwarrior_cmd, "<CR>")
+        createSplit(callOrReturn(config.cmds.taskwarrior_cmd), "<CR>")
     end
 end
 
